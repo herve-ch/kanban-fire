@@ -12,6 +12,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideDatabase,getDatabase } from '@angular/fire/database';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -29,7 +35,12 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatDialogModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage())
 
   ],
   providers: [],

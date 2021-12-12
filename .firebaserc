@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "kanbanfire-ea9c5": {
+      "hosting": {
+        "kanban-fire": [
+          "kanbanfire-ea9c5"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "kanbanfire-ea9c5"
+  }
+}
