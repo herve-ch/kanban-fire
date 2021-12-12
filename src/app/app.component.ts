@@ -87,30 +87,33 @@ export class AppComponent {
 
   }
 
-  drop(event: CdkDragDrop<Task[]>): void {
+  drop(event: CdkDragDrop<Task[] | null>): void {
     if (event.previousContainer === event.container) {
       return;
     }
 
-    const item = event.previousContainer.data[event.previousIndex];
+    if (event.previousContainer.data != null && event.container.data) {
+      const item = event.previousContainer.data[event.previousIndex];
 
-    runTransaction(this.firestore, () => {
-      const deleteRef = doc(this.firestore, event.previousContainer.id + `/${item.id}`);
-      const addRef = collection(this.firestore, event.container.id);
+      runTransaction(this.firestore, () => {
+        const deleteRef = doc(this.firestore, event.previousContainer.id + `/${item.id}`);
+        const addRef = collection(this.firestore, event.container.id);
 
-      const promise = Promise.all([
-        deleteDoc(deleteRef),
-        addDoc(addRef, item),
-      ]);
-      return promise;
-    })
+        const promise = Promise.all([
+          deleteDoc(deleteRef),
+          addDoc(addRef, item),
+        ]);
+        return promise;
+      })
 
-    transferArrayItem(
-      event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex
-    );
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+
   }
 }
 
