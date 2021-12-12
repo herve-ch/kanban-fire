@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
-
 import { Task } from './task/task';
+
 
 @Component({
   selector: 'app-root',
@@ -58,8 +58,11 @@ export class AppComponent {
         if (!result) {
           return;
         }
-        const addRef = collection(this.firestore, 'todo');
-        addDoc(addRef, result.task);
+
+        if (result.task.description != undefined && result.task.title != undefined) {
+          const addRef = collection(this.firestore, 'todo');
+          addDoc(addRef, result.task)
+        }
       });
   }
 
@@ -92,7 +95,7 @@ export class AppComponent {
       return;
     }
 
-    if (event.previousContainer.data != null && event.container.data) {
+    if (event.previousContainer.data && event.container.data) {
       const item = event.previousContainer.data[event.previousIndex];
 
       runTransaction(this.firestore, () => {
