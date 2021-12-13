@@ -22,7 +22,7 @@ const getObservable = (collection: Observable<Task[]>) => {
 })
 
 export class AppComponent {
-  title = 'kanban-fire';
+  title = 'kanban-fire Jeux';
 
   /*todo: Task[] = [
     {
@@ -67,7 +67,7 @@ export class AppComponent {
           return;
         }
 
-        if (result.task.description != undefined && result.task.title != undefined) {
+        if (result.task.description != undefined || result.task.title != undefined) {
           const addRef = collection(this.firestore, 'todo');
           addDoc(addRef, result.task)
         }
