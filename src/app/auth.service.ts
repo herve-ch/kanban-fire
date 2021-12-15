@@ -12,7 +12,7 @@ export class AuthService {
   createNewUser(email: string, password: string) {
     const auth = getAuth();
 
-   return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password);
   }
   signOutUser() {
     const auth = getAuth();
