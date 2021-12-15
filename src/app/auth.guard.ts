@@ -17,14 +17,14 @@ export class AuthGuard implements CanActivate {
       return new Promise(
         (resolve, reject) => {
           const auth = getAuth();
-
+          
           auth.onAuthStateChanged(
             (user) => {
               if(user) {
                 console.log(user)
                 resolve(true);
               } else {
-                this.router.navigate(['/auth', 'signin']);
+                this.router.navigate(['/signUp']);
                 resolve(false);
               }
             }
