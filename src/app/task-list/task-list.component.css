@@ -45,3 +45,10 @@ app-new-task {
 .cdk-drag-placeholder {
     opacity: 0;
 }
+
+.navigation-items{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ 

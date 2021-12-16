@@ -5,6 +5,9 @@ import { updateDoc } from 'firebase/firestore'; import { BehaviorSubject, Observ
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { Task } from '../task/task';
+import { AuthService } from '../auth.service';
+import { getAuth } from '@firebase/auth';
+import { Router } from '@angular/router';
 
 const getObservable = (collection: Observable<Task[]>) => {
   const subject = new BehaviorSubject<Task[]>([]);
@@ -19,13 +22,14 @@ const getObservable = (collection: Observable<Task[]>) => {
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TaskListComponent{
+export class TaskListComponent implements OnInit {
 
   todo: Observable<Task[]>;
   inProgress: Observable<Task[]>;
   done: Observable<Task[]>;
+  user: any;
 
-  constructor(private dialog: MatDialog, private firestore: Firestore) {
+  constructor(private dialog: MatDialog, private firestore: Firestore, private authService: AuthService, private router:Router) {
 
     const todoRef = collection(firestore, 'todo');
     this.todo = getObservable(collectionData(todoRef, { idField: 'id' }) as Observable<Task[]>);
@@ -35,6 +39,20 @@ export class TaskListComponent{
 
     const doneRef = collection(firestore, 'done');
     this.done = getObservable(collectionData(doneRef, { idField: 'id' }) as Observable<Task[]>);
+  }
+
+  ngOnInit(): void {
+    const auth = getAuth();
+
+    auth.onAuthStateChanged(
+      (user) => {
+        if (user) {
+          this.user = user;
+        } else {
+          this.user = null;
+        }
+      }
+    );
   }
 
   newTask(): void {
@@ -111,6 +129,15 @@ export class TaskListComponent{
     }
 
   }
+
+  onSignOut() {
+    this.authService.signOutUser();
+  }
+  
+  onSignIn() {
+    this.router.navigate(['auth','signin']);
+  }
+  
 }
 
 

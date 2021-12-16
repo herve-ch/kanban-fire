@@ -13,9 +13,7 @@ export class AppComponent {
   title = 'kanban-fire Jeux';
 
   constructor(private authService: AuthService) { }
-  
-  onSignOut() {
-    this.authService.signOutUser();
-  }
+
+ 
 }
   

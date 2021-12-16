@@ -21,6 +21,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { SignupComponent } from './signup/signup.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TaskListComponent } from './task-list/task-list.component';
+import { SigninComponent } from './signin/signin.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { TaskListComponent } from './task-list/task-list.component';
     TaskComponent,
     TaskDialogComponent,
     SignupComponent,
-    TaskListComponent
+    TaskListComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { TaskListComponent } from './task-list/task-list.component';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
