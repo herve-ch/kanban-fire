@@ -59,7 +59,7 @@ export class TaskListComponent implements OnInit {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
-        task: {},
+        task: {description:''},
       },
     });
     dialogRef
@@ -95,7 +95,7 @@ export class TaskListComponent implements OnInit {
         deleteDoc(docRef);
       } else {
 
-        updateDoc(docRef, { 'description': task.description, 'title': task.title });
+        updateDoc(docRef, { 'description': task.description?task.description:'', 'title': task.title });
       }
     });
 
