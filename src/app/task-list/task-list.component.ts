@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collectionData, collection, CollectionReference, query, runTransaction, doc, deleteDoc, addDoc } from '@angular/fire/firestore';
-import { updateDoc } from 'firebase/firestore'; import { BehaviorSubject, Observable } from 'rxjs';
+import { orderBy, updateDoc } from 'firebase/firestore'; import { BehaviorSubject, Observable } from 'rxjs';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { Task } from '../task/task';
@@ -31,13 +31,14 @@ export class TaskListComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private firestore: Firestore, private authService: AuthService, private router:Router) {
 
-    const todoRef = collection(firestore, 'todo');
+    const todoRef =  query(collection(firestore, 'todo'),orderBy("title"));
+    //const todoRef = collection(firestore, 'todo');
     this.todo = getObservable(collectionData(todoRef, { idField: 'id' }) as Observable<Task[]>);
 
-    const inProgressRef = collection(firestore, 'inProgress');
+    const inProgressRef = query(collection(firestore, 'inProgress'),orderBy("title"));
     this.inProgress = getObservable(collectionData(inProgressRef, { idField: 'id' }) as Observable<Task[]>);
 
-    const doneRef = collection(firestore, 'done');
+    const doneRef = query(collection(firestore, 'done'),orderBy("title"));
     this.done = getObservable(collectionData(doneRef, { idField: 'id' }) as Observable<Task[]>);
   }
 
