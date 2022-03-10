@@ -1,5 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { getAuth } from '@angular/fire/auth';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../auth.service';
 import { Task } from '../task/task';
 
 @Component({
@@ -7,20 +9,37 @@ import { Task } from '../task/task';
   templateUrl: './task-dialog.component.html',
   styleUrls: ['./task-dialog.component.css'],
 })
-export class TaskDialogComponent {
+export class TaskDialogComponent implements OnInit {
   private backupTask: Partial<Task> = { ...this.data.task };
+  user: any;
 
-  constructor(
+  constructor(private authService: AuthService, 
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData
   ) {}
 
+  ngOnInit(): void {
+    const auth = getAuth();
+  
+    auth.onAuthStateChanged(
+      (user) => {
+        if (user) {
+          this.user = user;
+        } else {
+          this.user = null;
+        }
+      }
+    );
+  }
+  
   cancel(): void {
     this.data.task.title = this.backupTask.title;
     this.data.task.description = this.backupTask.description;
     this.dialogRef.close(this.data);
   }
 }
+
+
 
 
 export interface TaskDialogData {
