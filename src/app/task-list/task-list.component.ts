@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Firestore, collectionData, collection, CollectionReference, query, runTransaction, doc, deleteDoc, addDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, CollectionReference, query, runTransaction, doc, deleteDoc, addDoc, where } from '@angular/fire/firestore';
 import { orderBy, updateDoc } from 'firebase/firestore'; import { BehaviorSubject, Observable } from 'rxjs';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
@@ -30,8 +30,8 @@ export class TaskListComponent implements OnInit {
   user: any;
 
   constructor(private dialog: MatDialog, private firestore: Firestore, private authService: AuthService, private router:Router) {
-
-    const todoRef =  query(collection(firestore, 'todo'),orderBy("title"));
+    
+    const todoRef =  query(collection(firestore, 'todo'), /*where('description','==','test'),*/ orderBy("title"));
     //const todoRef = collection(firestore, 'todo');
     this.todo = getObservable(collectionData(todoRef, { idField: 'id' }) as Observable<Task[]>);
 
