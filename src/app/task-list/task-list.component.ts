@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collectionData, collection, CollectionReference, query, runTransaction, doc, deleteDoc, addDoc, where } from '@angular/fire/firestore';
-import { orderBy, updateDoc } from 'firebase/firestore'; import { BehaviorSubject, Observable } from 'rxjs';
+import { orderBy, updateDoc } from 'firebase/firestore'; import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { Task } from '../task/task';
@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
 const getObservable = (collection: Observable<Task[]>) => {
   const subject = new BehaviorSubject<Task[]>([]);
   collection.subscribe((val: Task[]) => {
-    subject.next(val);
+    /*let newVal=val.filter(t=>t.title=="Astral chain");
+    subject.next(newVal);*/
+    subject.next(val)
   });
   return subject;
 };
@@ -23,23 +25,29 @@ const getObservable = (collection: Observable<Task[]>) => {
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
-
+  search: string = "";
   todo: Observable<Task[]>;
   inProgress: Observable<Task[]>;
   done: Observable<Task[]>;
   user: any;
 
-  constructor(private dialog: MatDialog, private firestore: Firestore, private authService: AuthService, private router:Router) {
-    
-    const todoRef =  query(collection(firestore, 'todo'), /*where('description','==','test'),*/ orderBy("title"));
-    //const todoRef = collection(firestore, 'todo');
-    this.todo = getObservable(collectionData(todoRef, { idField: 'id' }) as Observable<Task[]>);
 
-    const inProgressRef = query(collection(firestore, 'inProgress'),orderBy("title"));
+  constructor(private dialog: MatDialog, private firestore: Firestore, private authService: AuthService, private router: Router) {
+
+    const todoRef = query(collection(firestore, 'todo'), /*where('description','==','test'),*/ orderBy("title"));
+    //const todoRef = collection(firestore, 'todo');
+    this.todo = getObservable(collectionData(todoRef, { idField: 'id' }) as Observable<Task[]>) as Observable<Task[]>;
+    const inProgressRef = query(collection(firestore, 'inProgress'), orderBy("title"));
     this.inProgress = getObservable(collectionData(inProgressRef, { idField: 'id' }) as Observable<Task[]>);
 
-    const doneRef = query(collection(firestore, 'done'),orderBy("title"));
+    const doneRef = query(collection(firestore, 'done'), orderBy("title"));
     this.done = getObservable(collectionData(doneRef, { idField: 'id' }) as Observable<Task[]>);
+  }
+
+  updateFilter(): void {
+    this.todo = this.todo.pipe(map(t => t.filter(a => a.title.toUpperCase().includes(this.search.toUpperCase()) || this.search.length==0)))
+    this.inProgress = this.inProgress.pipe(map(t => t.filter(a => a.title.toUpperCase().includes(this.search.toUpperCase()) || this.search.length==0)))
+    this.done = this.done.pipe(map(t => t.filter(a => a.title.toUpperCase().includes(this.search.toUpperCase()) || this.search.length==0)))
   }
 
   ngOnInit(): void {
@@ -60,7 +68,7 @@ export class TaskListComponent implements OnInit {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '270px',
       data: {
-        task: {description:''},
+        task: { description: '' },
       },
     });
     dialogRef
@@ -96,7 +104,7 @@ export class TaskListComponent implements OnInit {
         deleteDoc(docRef);
       } else {
 
-        updateDoc(docRef, { 'description': task.description?task.description:'', 'title': task.title });
+        updateDoc(docRef, { 'description': task.description ? task.description : '', 'title': task.title });
       }
     });
 
@@ -134,11 +142,11 @@ export class TaskListComponent implements OnInit {
   onSignOut() {
     this.authService.signOutUser();
   }
-  
+
   onSignIn() {
-    this.router.navigate(['auth','signin']);
+    this.router.navigate(['auth', 'signin']);
   }
-  
+
 }
 
 

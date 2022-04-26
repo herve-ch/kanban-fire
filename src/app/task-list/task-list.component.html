@@ -22,12 +22,17 @@
         </ul>
     </div>
 </mat-toolbar>
-<div class="container-wrapper">
 
+<button *ngIf="user && user.email === 'rv_changue@hotmail.com'" (click)="newTask()" mat-button>
+    <mat-icon>add</mat-icon> Ajouter un jeu
+</button>
+<br/>
+
+Recherche <input [(ngModel)]="search" (ngModelChange)="updateFilter()"/>
+
+<div class="container-wrapper">
     <div class="container">
-        <button *ngIf="user && user.email === 'rv_changue@hotmail.com'" (click)="newTask()" mat-button>
-            <mat-icon>add</mat-icon> Ajouter un jeu
-        </button>
+        
 
         <h2>A faire</h2>
 
