@@ -1,7 +1,8 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" style="height: 100px;">
     <div>
         <mat-icon>local_fire_department</mat-icon>
         <span>Jeux kyo</span>
+        <img src="/assets/images/kyo.png" style="width:180px"/>
     </div>
     <div fxFlex fxLayout fxLayoutAlign="end">
         <ul fxLayout class="navigation-items">
@@ -10,7 +11,8 @@
             </li>
             <li>
                 <!--<a routerLink="/">Account Actions</a>-->
-                <span *ngIf="user">Utilisateur: {{user.email}}
+                <span *ngIf="user">{{user.email}}
+                    <br/>
                     <a (click)="onSignOut()">Déconnexion</a>
                 </span>
 
