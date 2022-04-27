@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "yarn interactive-update --latest": "yarn interactive-update --latest"
+    "yarn upgrade-interactive --latest": "yarn upgrade-interactive --latest"
   },
   "private": true,
   "dependencies": {
@@ -35,9 +35,9 @@
     "@angular-devkit/build-angular": "~13.3.3",
     "@angular/cli": "~13.3.3",
     "@angular/compiler-cli": "~13.3.4",
-    "@types/jasmine": "~3.10.0",
-    "@types/node": "^12.11.1",
-    "jasmine-core": "~3.10.0",
+    "@types/jasmine": "~4.0.3",
+    "@types/node": "^17.0.29",
+    "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
