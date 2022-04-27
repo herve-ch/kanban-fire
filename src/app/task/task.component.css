@@ -1,9 +1,12 @@
 :host {
-    display: block;
-  }
-  
-  .item {
-    margin-bottom: 5px;
-    cursor: pointer;
-  }
-  
+  display: block;
+}
+
+.item {
+  margin-bottom: 5px;
+  cursor       : pointer;
+}
+
+mat-card{
+  background-color: #fcf0d8;
+}
